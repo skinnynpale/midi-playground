@@ -5,6 +5,7 @@ from random import randint
 import pygame
 
 
+
 def draw_beveled_rectangle(surf: pygame.Surface, color: pygame.Color, rect: pygame.Rect) -> None:
     """i think they're called bevels"""
     pygame.draw.rect(surf, color.lerp((0, 0, 0), 0.4), rect.inflate(8, 8), border_radius=4)
@@ -119,7 +120,10 @@ class Menu:
                 # every 2 frames add a particle
                 if n_frames % 2 == 0:
                     new = Particle(self.square.pos, [0, 0], True)
-                    new.color = get_colors()["background"]
+                    #new.color = get_colors()["background"]
+                    #new.color = (randint(0,255),randint(0,255),randint(0,255))
+                    colors=[(255,255,0),(0,255,255),(255,0,255)]
+                    new.color = colors[randint(0,len(colors)-1)]
                     new.delta = [randint(-10, 10)/20, randint(-10, 10)/20]
                     self.particles.append(new)
 

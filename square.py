@@ -14,25 +14,13 @@ class Square:
         self.dir: list[int] = [dx, dy]
         self.last_bounce_time = -100
         self.latest_bounce_direction = 0  # 0 = horiz, 1 = vert
-        self.past_colors = []
         self.died = False
+
+        self.image = pygame.image.load("assets/ava.png")#.convert_alpha()
+        self.image = pygame.transform.scale(self.image, (Config.SQUARE_SIZE, Config.SQUARE_SIZE))
 
         self.time_since_glow_start = 0
         self.glowy_surfaces = {}
-
-    def register_past_color(self, col: tuple[int, int, int]):
-        for _ in range(max(Config.square_swipe_anim_speed, 1)):
-            self.past_colors.insert(0, col)
-        while len(self.past_colors) > Config.SQUARE_SIZE * 4 / 5:
-            self.past_colors.pop()
-
-    def get_surface(self, size: tuple[int, int]):
-        ss = int(Config.SQUARE_SIZE * 4 / 5)
-        surf = pygame.Surface((ss, ss))
-        for index, col in enumerate(self.past_colors):
-            y = index if self.dir_y != 1 else ss - 1 - index
-            pygame.draw.line(surf, col, (0, y), (ss, y))
-        return pygame.transform.scale(surf, size)
 
     def copy(self) -> "Square":
         new = Square(*self.pos, *self.dir)
@@ -94,16 +82,11 @@ class Square:
     def draw(self, screen: pygame.Surface, sqrect: pygame.Rect):
         if self.died:
             return
-        square_color_index = round((self.dir_x + 1) / 2 + self.dir_y + 1)
-        self.register_past_color(get_colors()["square"][square_color_index % len(get_colors()["square"])])
 
         if Config.theme == "dark_modern" and make_glowy2 is not None:
             self.draw_glowing3(screen, sqrect)
-        else:
-            pygame.draw.rect(screen, (0, 0, 0), sqrect)
-            sq_surf = self.get_surface(
-                tuple(sqrect.inflate(-int(Config.SQUARE_SIZE / 5), -int(Config.SQUARE_SIZE / 5))[2:]))
-            screen.blit(sq_surf, sq_surf.get_rect(center=sqrect.center))
+        
+        screen.blit(self.image, sqrect)
 
     @x.setter
     def x(self, val: int):

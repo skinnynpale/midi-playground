@@ -6,6 +6,7 @@ from camera import Camera
 from keystrokes import Keystrokes
 from particle import Particle
 from zipfile import ZipFile
+from config import Config
 
 
 class Game:
@@ -121,9 +122,24 @@ class Game:
             lerp = abs((self.world.time - 0.25 + Config.music_offset / 1000) - self.world.square.last_bounce_time) * 5
             lerp = lerp ** 2  # square it for better-looking interpolation
             if self.world.square.latest_bounce_direction:
+                self.world.square.image = pygame.image.load("assets/ava.png")
+                sq_size = Config.SQUARE_SIZE
+                sq_w = random.randint(int(sq_size * 1.1), int(sq_size * 1.2))
+                sq_h = random.randint(int(sq_size * 0.8), int(sq_size * 0.9))
+                self.world.square.image = pygame.transform.scale(self.world.square.image, (sq_w, sq_h))
                 sqrect.inflate_ip((lerp * 5, -10 * lerp))
             else:
+                sq_size = Config.SQUARE_SIZE
+                sq_w = random.randint(int(sq_size * 0.8), int(sq_size * 0.9))
+                sq_h = random.randint(int(sq_size * 1.1), int(sq_size * 1.2))
+                self.world.square.image = pygame.image.load("assets/ava.png")
+                self.world.square.image = pygame.transform.scale(self.world.square.image, (sq_w, sq_h))
                 sqrect.inflate_ip((-10 * lerp, lerp * 5))
+                
+        if self.world.time > (self.world.square.last_bounce_time + 0.2):
+            self.world.square.image = pygame.image.load("assets/ava.png")
+            self.world.square.image = pygame.transform.scale(self.world.square.image, (Config.SQUARE_SIZE,Config.SQUARE_SIZE ))
+                
 
         # safe areas
         total_rects = 0
@@ -146,7 +162,13 @@ class Game:
 
         # particles
         for particle in self.world.particles:
-            pygame.draw.rect(screen, particle.color, self.camera.offset(particle.rect))
+            #pygame.draw.rect(screen, particle.color, self.camera.offset(particle.rect))
+            #random_color= (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+            palet=[(255,255,0),(255,255,0),(255,255,0)]
+            color = palet[random.randint(0,len(palet)-1)]
+            #pygame.draw.rect(screen, (random.randint(0,255),random.randint(0,255),random.randint(0,255)), self.camera.offset(particle.rect))
+            #pygame.draw.rect(screen, color, self.camera.offset(particle.rect))
+            pygame.draw.circle(screen, color,self.camera.offset(particle.rect.center),random.randint(2,5))
         for remove_particle in [particle for particle in self.world.particles if particle.age()]:
             self.world.particles.remove(remove_particle)
 

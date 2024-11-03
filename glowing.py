@@ -16,7 +16,7 @@ class Colors:
 
 def create_border(image: np.ndarray, margin: int, thickness: int, color: Colors) -> np.ndarray:
     height, width = image.shape[:2]
-    cv2.rectangle(image, (margin, margin), (width - margin, height - margin), color, thickness=thickness)
+    #cv2.rectangle(image, (margin, margin), (width - margin, height - margin), color, thickness=1)
     return image
 
 
@@ -49,7 +49,7 @@ def glowing_border(image: np.ndarray, margin=20, thickness=20, color: Colors = C
     image = create_border(image, margin, thickness, color)
 
     # Apply the blooming.
-    image = apply_blooming(image)
+    # image = apply_blooming(image)
 
     # Reassert the original border, to get a clear outline.
     # Similar to the Watson-Scott test, two borders were added here.

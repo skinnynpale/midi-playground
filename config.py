@@ -37,8 +37,8 @@ class Config:
         },
 
         "dark": {
-            "hallway": pygame.Color(214, 209, 205),
-            "background": pygame.Color(60, 63, 65),
+            "hallway": pygame.Color(224, 78, 35),
+            "background": pygame.Color(255, 255, 0),
             "square": [
                 pygame.Color(224, 26, 79),
                 pygame.Color(173, 247, 182),
@@ -137,8 +137,8 @@ class Config:
     }
 
     # intended configurable settings
-    SCREEN_WIDTH = pygame.display.Info().current_w if pygame.display.Info().current_w else 1920
-    SCREEN_HEIGHT = pygame.display.Info().current_h if pygame.display.Info().current_h else 1080
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
     theme: Optional[str] = "dark"
     seed: Optional[int] = None
     camera_mode: Optional[int] = 2
