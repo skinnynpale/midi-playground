@@ -205,6 +205,19 @@ class Game:
             if self.world.square.died:
                 self.world.scorekeeper.hp = 0
 
+         # Draw trail
+        if len(self.world.trail_positions) > 1:
+            # Convert trail positions to screen coordinates using camera offset
+            screen_positions = [self.camera.offset(pos) for pos in self.world.trail_positions]
+            
+            # Draw trail line
+            pygame.draw.lines(
+                screen,
+                (255, 255, 0),  # Yellow color for trail
+                False,  # Don't connect last point to first
+                screen_positions,
+                50  # Line width
+            )
         # draw square
         self.world.square.draw(screen, sqrect)
 

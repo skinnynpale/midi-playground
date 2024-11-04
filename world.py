@@ -22,7 +22,9 @@ class World:
         self.timestamps = []
         self.square = Square()
         self.scorekeeper = Scorekeeper(self)
-        self.colors = []           
+        self.colors = []
+        self.trail_positions = []
+        self.trail_length = 20  # How many positions to keep in trail
 
     def update_time(self) -> None:
         self.time = get_current_time() - self.start_time
@@ -38,6 +40,12 @@ class World:
             self.particles.append(new)
 
     def handle_bouncing(self, square: Square):
+        # Add current position to trail
+        self.trail_positions.append(square.pos.copy())
+        # Keep only last N positions
+        if len(self.trail_positions) > self.trail_length:
+            self.trail_positions.pop(0)
+            
         if len(self.future_bounces):
             if (self.time * 1000 + Config.music_offset)/1000 > self.future_bounces[0].time:
                 current_bounce = self.get_next_bounce()
