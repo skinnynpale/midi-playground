@@ -210,16 +210,20 @@ class Game:
             # Convert trail positions to screen coordinates using camera offset
             screen_positions = [self.camera.offset(pos) for pos in self.world.trail_positions]
             
-            # Draw anti-aliased lines
-            pygame.draw.aalines(
-                screen,
-                (255, 255, 0),
-                False,
-                screen_positions,
-                True  # blend=True for smoother lines
-            )
+            # Draw circles at each position
+            for pos in screen_positions:
+                pygame.draw.rect(
+                    screen,
+                    (255, 255, 0),
+                    pygame.Rect(
+                        pos[0] - 10,  # x position (centered)
+                        pos[1] - 10,  # y position (centered)
+                        20,  # width
+                        20   # height
+                    )
+                )
             
-            # Draw solid lines on top
+            # Draw lines on top
             pygame.draw.lines(
                 screen,
                 (255, 255, 0),
